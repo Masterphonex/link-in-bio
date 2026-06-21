@@ -25,7 +25,7 @@ export default function SignupPage() {
       name: username,
       username,
       fetchOptions: {
-        onError: (ctx) => setError(ctx.error.message),
+        onError: (ctx: { error: { message: string } }) => setError(ctx.error.message),
       },
     } as any)
 

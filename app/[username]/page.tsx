@@ -2,8 +2,12 @@ import { prisma } from "@/lib/prisma"
 import LinkCard from "./LinkCard"
 
 import { notFound } from "next/navigation"
-import { Link } from "@prisma/client"
 
+type Link = {
+  id: string
+  title: string
+  url: string
+}
 
 export default async function UserPage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params
