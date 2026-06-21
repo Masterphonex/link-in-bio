@@ -1,0 +1,71 @@
+"use client"
+
+import { useState } from "react"
+import { signIn } from "@/lib/auth-client"
+import { useRouter } from "next/navigation"
+
+export default function LoginPage() {
+  const router = useRouter()
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
+
+    const { error } = await signIn.email({
+      email,
+      password,
+      fetchOptions: {
+        onError: (ctx) => setError(ctx.error.message),
+      },
+    })
+
+    if (!error) {
+      router.push("/dashboard")
+    }
+
+    setLoading(false)
+  }
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="w-full max-w-sm flex flex-col gap-6">
+        <h1 className="text-3xl font-bold text-center">Log In</h1>
+        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            required
+            className="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-white transition"
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            required
+            className="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-white transition"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-white text-black py-3 rounded-full font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+          >
+            {loading ? "Logging in..." : "Log In"}
+          </button>
+        </form>
+        <p className="text-center text-gray-400 text-sm">
+          Don&apos;t have an account?{" "}
+          <a href="/signup" className="text-white underline">Sign up</a>
+        </p>
+      </div>
+    </main>
+  )
+}
