@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import LinkCard from "./LinkCard"
 
 import { notFound } from "next/navigation"
+import { Link } from "@prisma/client"
 
 
 export default async function UserPage({ params }: { params: Promise<{ username: string }> }) {
@@ -27,7 +28,7 @@ export default async function UserPage({ params }: { params: Promise<{ username:
           {user.username[0].toUpperCase()}
         </div>
         <h1>{user.username}</h1>
-        {user.links.map((link) => <LinkCard key={link.id} title={link.title} url={link.url} />)}
+        {user.links.map((link: Link) => <LinkCard key={link.id} title={link.title} url={link.url} />)}
 
       </div>
     </main>
