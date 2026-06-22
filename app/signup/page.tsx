@@ -1,8 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "motion/react"
 import { signUp } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
+
 
 export default function SignupPage() {
   const router = useRouter()
@@ -37,41 +40,70 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-black text-white">
-      <div className="w-full max-w-sm flex flex-col gap-6">
-        <h1 className="text-3xl font-bold text-center">Create Account</h1>
-        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <main className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[450px] h-[450px] bg-accent/20 rounded-full blur-[120px] pointer-events-none" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="relative z-10 w-full max-w-sm flex flex-col gap-6"
+      >
+        <div className="flex flex-col gap-1.5 text-center">
+          <h1 className="font-display text-2xl font-bold">Create your page</h1>
+          <p className="text-muted text-sm">Takes less than a minute</p>
+        </div>
+
+        {error && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-red-400 text-sm text-center bg-red-400/10 border border-red-400/20 rounded-lg py-2 px-3"
+          >
+            {error}
+          </motion.p>
+        )}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
             name="username"
             type="text"
             placeholder="Username"
             required
-            className="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-white transition"
+            className="bg-surface border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-accent transition-colors placeholder:text-muted"
           />
           <input
             name="email"
             type="email"
             placeholder="Email"
             required
-            className="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-white transition"
+            className="bg-surface border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-accent transition-colors placeholder:text-muted"
           />
           <input
             name="password"
             type="password"
             placeholder="Password"
             required
-            className="bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-white transition"
+            className="bg-surface border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-accent transition-colors placeholder:text-muted"
           />
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="bg-white text-black py-3 rounded-full font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="bg-accent text-white py-3 rounded-full font-semibold mt-1 disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Sign Up"}
-          </button>
+            {loading ? "Creating..." : "Sign up"}
+          </motion.button>
         </form>
-      </div>
+
+        <p className="text-center text-muted text-sm">
+          Already have an account?{" "}
+          <Link href="/login" className="text-foreground underline underline-offset-4">
+            Log in
+          </Link>
+        </p>
+      </motion.div>
     </main>
   )
 }

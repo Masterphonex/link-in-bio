@@ -1,5 +1,3 @@
-import React from 'react'
-
 type LinkCardProps = {
   title: string
   url: string
@@ -7,11 +5,19 @@ type LinkCardProps = {
 
 export default function LinkCard({ title, url }: LinkCardProps) {
   return (
-    <div className="flex items-center justify-between bg-gray-900 border border-gray-700 rounded-lg px-4 py-3">
-      <a href={url} target="_blank" className="flex-1">
+
+    <a
+      href={url}
+      target="_blank"
+      className="group flex items-center justify-between bg-surface border border-white/5 rounded-2xl px-5 py-4 transition-all hover:border-accent/40 hover:bg-surface/80"
+    >
+      <div>
         <p className="font-semibold">{title}</p>
-        <p className="text-gray-400 text-sm">{url}</p>
-      </a>
-    </div>
+        <p className="text-muted text-sm">{url}</p>
+      </div>
+      <span className="text-muted group-hover:text-accent group-hover:translate-x-1 transition-all">
+        →
+      </span>
+    </a >
   )
 }
